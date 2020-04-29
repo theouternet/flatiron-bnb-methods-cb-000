@@ -1,16 +1,15 @@
 class City < ActiveRecord::Base
   has_many :neighborhoods
   has_many :listings, :through => :neighborhoods
-  
-  def city_openings(start_date, end_date)
+   def city_openings(start_date, end_date)
     self.listings.select do |listing|
       listing.reservations.none? do |res|
         res.checkin <= Date.parse(end_date) && res.checkout >= Date.parse(start_date)
       end
     end
   end
-  
-	  def self.most_res
+
+  def self.most_res
     most_reserved_city = nil
     highest_res = 0
     City.all.each do |city|
